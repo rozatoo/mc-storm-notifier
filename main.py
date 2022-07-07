@@ -23,9 +23,10 @@ bot = commands.Bot(
     allowed_mentions=discord.AllowedMentions(roles=False, users=True, everyone=True),
     )
 
+#We dont need a db at this time
 
-loop = asyncio.get_event_loop()
-bot.db = loop.run_until_complete(aiosqlite.connect('database.db'))
+##loop = asyncio.get_event_loop()
+##bot.db = loop.run_until_complete(aiosqlite.connect('database.db'))
 bot.currentlyThundering = False
 bot.doScrape = True
 bot.errorCH = 994483840087248906
@@ -49,7 +50,7 @@ async def on_ready():
 
 async def main():
     #Setup the DB if it hasn't been done already
-    await utils.dbsetup.setup(bot)
+    ##await utils.dbsetup.setup(bot)
     #Load extensions
     for ext in extensions:
         await bot.load_extension(f"cogs.{ext}")
