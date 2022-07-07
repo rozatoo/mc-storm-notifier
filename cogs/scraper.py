@@ -29,16 +29,15 @@ class Scraper(commands.Cog, command_attrs=dict(hidden=False)):
                 ch = self.bot.get_channel(994478862362759188)
                 if (("thunder_day" or "thunder_night") in src):
                     if self.bot.currentlyThundering is False:
-                        await ch.send("@everyone a thunderstorm is happening right now!")
+                        await ch.send(f"@everyone a thunderstorm started <t:{int(time.time())}:R>")
                         self.bot.currentlyThundering = True
                 else:
                     if self.bot.currentlyThundering is True:
                         await ch.send("The thunderstorm has stopped...")
                         self.bot.currentlyThundering = False
             end = time.time()
-            await asyncio.sleep(random.randint(1,5))
             errorCH = self.bot.get_channel(self.bot.errorCH)
-            await errorCH.send(f"last updated <t:{int(time.time())}:R>\nTook {int(end-start)}s")
+            await errorCH.send(f"last updated <t:{int(time.time())}:R>\nTook {round(end-start, 2)}s", delete_after=30)
 
 
 
