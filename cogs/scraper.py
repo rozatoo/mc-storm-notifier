@@ -38,7 +38,7 @@ class Scraper(commands.Cog, command_attrs=dict(hidden=False)):
                         self.bot.currentlyThundering = False
             end = time.time()
             errorCH = await get_or_fetch_channel(self, self.bot.errorCH)
-            await errorCH.send(f"last updated <t:{int(time.time())}:R>\nTook {round(end-start, 2)}s\nWorld time: {worldtime}", delete_after=60)
+            await errorCH.send(f"last updated <t:{int(time.time())}:R>\nTook {round(end-start, 2)}s\nWorld time: {worldtime}\nCurrently Thundering: {self.bot.currentlyThundering}", delete_after=60)
 
 
 
