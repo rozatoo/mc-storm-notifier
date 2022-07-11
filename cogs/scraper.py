@@ -3,15 +3,14 @@ from discord.ext import commands
 from arsenic import browsers, services
 import arsenic
 import time
-import random
-import asyncio
+from utils import get_or_fetch_channel
 
 class Scraper(commands.Cog, command_attrs=dict(hidden=False)):
     def __init__(self, bot):
         self.bot = bot 
         self.scrape.start()
 
-    @tasks.loop(seconds=30.0)
+    @tasks.loop(seconds=60.0)
     async def scrape(self):
         if self.bot.doScrape is True:
             start = time.time()
@@ -25,8 +24,10 @@ class Scraper(commands.Cog, command_attrs=dict(hidden=False)):
             
             async with arsenic.get_session(service, browser) as session:
                 await session.get("https://ultravanilla.world")
+                worldtime = await session.wait_for_element(3, 'div.largeclock.timeofday')
+                worldtime = await worldtime.get_text()
                 src = await session.get_page_source()
-                ch = self.bot.get_channel(994478862362759188)
+                ch = await get_or_fetch_channel(self, 994478862362759188)
                 if (("thunder_day" or "thunder_night") in src):
                     if self.bot.currentlyThundering is False:
                         await ch.send(f"@everyone a thunderstorm started <t:{int(time.time())}:R>")
@@ -36,8 +37,8 @@ class Scraper(commands.Cog, command_attrs=dict(hidden=False)):
                         await ch.send("The thunderstorm has stopped...")
                         self.bot.currentlyThundering = False
             end = time.time()
-            errorCH = self.bot.get_channel(self.bot.errorCH)
-            await errorCH.send(f"last updated <t:{int(time.time())}:R>\nTook {round(end-start, 2)}s", delete_after=30)
+            errorCH = await get_or_fetch_channel(self, self.bot.errorCH)
+            await errorCH.send(f"last updated <t:{int(time.time())}:R>\nTook {round(end-start, 2)}s\nWorld time: {worldtime}", delete_after=60)
 
 
 
