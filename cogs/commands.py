@@ -25,5 +25,5 @@ class Commands(commands.Cog, command_attrs=dict(hidden=False)):
 
 
 
-async def setup(bot):
-	await bot.add_cog(Commands(bot))
+def setup(bot):
+	bot.add_cog(Commands(bot))

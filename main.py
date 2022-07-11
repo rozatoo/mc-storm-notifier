@@ -8,7 +8,11 @@ load_dotenv()
 
 
 
+logger = logging.getLogger('discord')
+logger.setLevel(logging.INFO)
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+logger.addHandler(handler)
 
 intents = discord.Intents.all()
 intents.typing = False
@@ -43,14 +47,10 @@ async def on_ready():
     print('Bot is ready!')
 
 
-async def main():
-    for ext in extensions:
-        await bot.load_extension(f"cogs.{ext}")
-        print(f'Loaded {ext}')
-    
+for ext in extensions:
+    bot.load_extension(f"cogs.{ext}")
+    print(f'Loaded {ext}')
 
-    # start the client
-    async with bot:
-        await bot.start(os.getenv("DISCORD_TOKEN_MCSN"))
 
-asyncio.run(main())
+
+bot.run(os.getenv("DISCORD_TOKEN_MCSN"))
