@@ -28,7 +28,11 @@ class Scraper(commands.Cog, command_attrs=dict(hidden=False)):
                 worldtime = await worldtime.get_text()
                 src = await session.get_page_source()
                 ch = await get_or_fetch_channel(self, 994478862362759188)
-                if (("thunder_day" or "thunder_night") in src):
+                if "thunder_night" in src:
+                    if self.bot.currentlyThundering is False:
+                        await ch.send(f"@everyone a thunderstorm started <t:{int(time.time())}:R>")
+                        self.bot.currentlyThundering = True
+                elif "thunder_day" in src:
                     if self.bot.currentlyThundering is False:
                         await ch.send(f"@everyone a thunderstorm started <t:{int(time.time())}:R>")
                         self.bot.currentlyThundering = True
