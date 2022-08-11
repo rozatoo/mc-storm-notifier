@@ -1,4 +1,4 @@
 setuptools
 python-dotenv
-arsenic
 pytest-asyncio
+aiohttp
