@@ -5,5 +5,5 @@ services:
     build: 
       context: .
     environment:
-      - DISCORD_TOKEN_MCSN=OTk0MzMyMjAxNjQ0NzI4NDQ0.GjFRRX.b79JlA4hEvFDRI9AWBzwdCQ5C379_p4gGVG02c
-      - REPEAT_TIME=3.0
+      - DISCORD_TOKEN_MCSN=
+      - REPEAT_TIME=
