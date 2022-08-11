@@ -8,6 +8,5 @@ COPY . .
 
 RUN pip install -r ./deployment/requirements.txt
 
-RUN bash ./deployment/entrypoint.sh
 
 ENTRYPOINT [ "python3", "main.py" ]

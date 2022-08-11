@@ -1,11 +1,9 @@
 from discord.ext import tasks
 from discord.ext import commands
-from arsenic import browsers, services
-import arsenic
 import time
 from utils import get_or_fetch_channel
+import aiohttp
 import os
-#test
 
 class Scraper(commands.Cog, command_attrs=dict(hidden=False)):
     def __init__(self, bot):
@@ -15,36 +13,21 @@ class Scraper(commands.Cog, command_attrs=dict(hidden=False)):
     @tasks.loop(seconds=float(os.getenv("REPEAT_TIME")))
     async def scrape(self):
         if self.bot.doScrape is True:
-            start = time.time()
-            service = services.Chromedriver(
-                binary='chromedriver'
-            )
-            browser = browsers.Chrome()
-            browser.capabilities = {
-                "goog:chromeOptions": {"args": ["--no-sandbox","--headless", "--disable-gpu","--remote-debugging-port=6123"]}
-            }
-            
-            async with arsenic.get_session(service, browser) as session:
-                await session.get("https://ultravanilla.world")
-                worldtime = await session.wait_for_element(3, 'div.largeclock.timeofday')
-                worldtime = await worldtime.get_text()
-                src = await session.get_page_source()
-                ch = await get_or_fetch_channel(self, 994478862362759188)
-                if "thunder_night" in src:
-                    if self.bot.currentlyThundering is False:
-                        await ch.send(f"@everyone a thunderstorm started <t:{int(time.time())}:R>")
-                        self.bot.currentlyThundering = True
-                elif "thunder_day" in src:
-                    if self.bot.currentlyThundering is False:
-                        await ch.send(f"@everyone a thunderstorm started <t:{int(time.time())}:R>")
-                        self.bot.currentlyThundering = True
-                else:
-                    if self.bot.currentlyThundering is True:
-                        await ch.send("The thunderstorm has stopped...")
-                        self.bot.currentlyThundering = False
-            end = time.time()
-            errorCH = await get_or_fetch_channel(self, self.bot.errorCH)
-            await errorCH.send(f"last updated <t:{int(time.time())}:R>\nTook {round(end-start, 2)}s\nWorld time: {worldtime}\nCurrently Thundering: {self.bot.currentlyThundering}", delete_after=float(os.getenv("REPEAT_TIME")))
+            async with aiohttp.ClientSession() as session:
+                async with session.get('http://142.202.220.236:8123/up/world/world/1') as resp:
+                    text = await resp.text()
+                    ch = await get_or_fetch_channel(self, 994478862362759188)
+                    if '\"isThundering\":true' in text:
+                        if self.bot.currentlyThundering is False:
+                            await ch.send(f"everyone a thunderstorm started <t:{int(time.time())}:R>")
+                            self.bot.currentlyThundering = True
+                    else:
+                        if self.bot.currentlyThundering is True:
+                            await ch.send("The thunderstorm has stopped...")
+                            self.bot.currentlyThundering = False
+
+                    errorCH = await get_or_fetch_channel(self, self.bot.errorCH)
+                    await errorCH.send(f"last updated <t:{int(time.time())}:R>\nCurrently Thundering: {self.bot.currentlyThundering}", delete_after=float(os.getenv("REPEAT_TIME")))
 
 
 
