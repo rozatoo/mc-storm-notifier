@@ -15,9 +15,9 @@ class Scraper(commands.Cog, command_attrs=dict(hidden=False)):
         if self.bot.doScrape is True:
             async with aiohttp.ClientSession() as session:
                 async with session.get('http://142.202.220.236:8123/up/world/world/1') as resp:
-                    text = await resp.text()
+                    data = await resp.json(content_type=None)
                     ch = await get_or_fetch_channel(self, 994478862362759188)
-                    if '\"isThundering\":true' and '\"hasStorm\":true' in text:
+                    if data['isThundering'] == data['hasStorm'] == True:
                         if self.bot.currentlyThundering is False:
                             await ch.send(f"@everyone a thunderstorm started <t:{int(time.time())}:R>")
                             self.bot.currentlyThundering = True
