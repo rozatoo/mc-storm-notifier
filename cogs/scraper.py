@@ -17,7 +17,7 @@ class Scraper(commands.Cog, command_attrs=dict(hidden=False)):
                 async with session.get('http://142.202.220.236:8123/up/world/world/1') as resp:
                     text = await resp.text()
                     ch = await get_or_fetch_channel(self, 994478862362759188)
-                    if '\"isThundering\":true' and '\"hasStorm\":false' in text:
+                    if '\"isThundering\":true' and '\"hasStorm\":true' in text:
                         if self.bot.currentlyThundering is False:
                             await ch.send(f"@everyone a thunderstorm started <t:{int(time.time())}:R>")
                             self.bot.currentlyThundering = True
