@@ -36,5 +36,5 @@ class Scraper(commands.Cog, command_attrs=dict(hidden=False)):
         await self.bot.wait_until_ready()
 
 
-def setup(bot):
-	bot.add_cog(Scraper(bot))
+async def setup(bot):
+	await bot.add_cog(Scraper(bot)) 
