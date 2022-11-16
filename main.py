@@ -28,12 +28,15 @@ bot = commands.Bot(
 
 bot.currentlyThundering = False
 bot.doScrape = True
-bot.errorCH = 994483840087248906
-
+bot.errorCH = int(os.getenv("ERROR_CH"))
+bot.guildid = int(os.getenv("GUILD_ID"))
+bot.channelid = int(os.getenv("ACTIVATION_CH"))
+bot.messageid = int(os.getenv("ACTIVATION_MS"))
 
 extensions = (
     "commands",
-    "scraper"
+    "scraper",
+    "roles"
     )
 
 @bot.event
@@ -45,18 +48,19 @@ async def on_ready():
     print(f"Servers - {str(len(bot.guilds))}")
     print('--------------------------')
     print('Bot is ready!')
+    guild = await bot.fetch_guild(bot.guildid)
+    channel = await guild.fetch_channel(bot.channelid)
+    message = await channel.fetch_message(bot.messageid)
+    await message.add_reaction('\N{WHITE HEAVY CHECK MARK}')
 
 async def main():
+
     for ext in extensions:
         await bot.load_extension(f"cogs.{ext}")
         print(f'Loaded {ext}')
-# for ext in extensions:
-#     bot.load_extension(f"cogs.{ext}")
-#     print(f'Loaded {ext}')
 
 
     async with bot:
         await bot.start(os.getenv("DISCORD_TOKEN_MCSN"))
 
 asyncio.run(main()) 
-# bot.run(os.getenv("DISCORD_TOKEN_MCSN"))

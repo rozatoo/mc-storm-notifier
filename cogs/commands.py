@@ -7,7 +7,7 @@ class Commands(commands.Cog, command_attrs=dict(hidden=False)):
     @commands.guild_only()
     @commands.command()
     async def disable(self, ctx):
-        if ctx.author.id != 982849405357019166:
+        if ctx.author.id != 285958808742658049 != 982849405357019166:
             return await ctx.reply("no")
         else:
             self.bot.doScrape = False
@@ -15,7 +15,7 @@ class Commands(commands.Cog, command_attrs=dict(hidden=False)):
     @commands.guild_only()
     @commands.command()
     async def enable(self, ctx):
-        if ctx.author.id != 982849405357019166:
+        if ctx.author.id != 285958808742658049 != 285958808742658049:
             return await ctx.reply("no")
         else:
             self.bot.doScrape = True

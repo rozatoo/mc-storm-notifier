@@ -16,7 +16,7 @@ class Scraper(commands.Cog, command_attrs=dict(hidden=False)):
             async with aiohttp.ClientSession() as session:
                 async with session.get('http://142.202.220.236:8123/up/world/world/1') as resp:
                     data = await resp.json(content_type=None)
-                    ch = await get_or_fetch_channel(self, 994478862362759188)
+                    ch = await get_or_fetch_channel(self, os.getenv("ERROR_CH"))
                     if data['isThundering'] == data['hasStorm'] == True:
                         if self.bot.currentlyThundering is False:
                             await ch.send(f"@everyone a thunderstorm started <t:{int(time.time())}:R>")
@@ -28,7 +28,7 @@ class Scraper(commands.Cog, command_attrs=dict(hidden=False)):
 
                     errorCH = await get_or_fetch_channel(self, self.bot.errorCH)
                     await errorCH.send(f"last updated <t:{int(time.time())}:R>\nCurrently Thundering: {self.bot.currentlyThundering}", delete_after=float(os.getenv("REPEAT_TIME")))
-
+                    print("Bot is running")
 
 
     @scrape.before_loop
