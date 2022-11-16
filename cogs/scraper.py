@@ -20,10 +20,14 @@ class Scraper(commands.Cog, command_attrs=dict(hidden=False)):
                     if data['isThundering'] == data['hasStorm'] == True:
                         if self.bot.currentlyThundering is False:
                             await ch.send(f"@everyone a thunderstorm started <t:{int(time.time())}:R>")
+                            message = await ch.fetch_message(ch.last_message_id)
+                            await message.publish()
                             self.bot.currentlyThundering = True
                     else:
                         if self.bot.currentlyThundering is True:
                             await ch.send("The thunderstorm has stopped...")
+                            message = await ch.fetch_message(ch.last_message_id)
+                            await message.publish()
                             self.bot.currentlyThundering = False
 
                     errorCH = await get_or_fetch_channel(self, self.bot.errorCH)
