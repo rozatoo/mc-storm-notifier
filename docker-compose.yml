@@ -7,3 +7,8 @@ services:
     environment:
       - DISCORD_TOKEN_MCSN=
       - REPEAT_TIME=
+      - ERROR_CH=
+      - PINGS_CH=
+      - ACTIVATION_CH=
+      - ACTIVATION_MS=
+      - GUILD_ID=

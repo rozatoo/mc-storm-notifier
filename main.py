@@ -22,7 +22,7 @@ intents.invites = False
 bot = commands.Bot(
     command_prefix="!",
     intents=intents,
-    allowed_mentions=discord.AllowedMentions(roles=False, users=True, everyone=True),
+    allowed_mentions=discord.AllowedMentions(roles=True, users=True, everyone=True),
     )
 
 
@@ -32,6 +32,7 @@ bot.errorCH = int(os.getenv("ERROR_CH"))
 bot.guildid = int(os.getenv("GUILD_ID"))
 bot.channelid = int(os.getenv("ACTIVATION_CH"))
 bot.messageid = int(os.getenv("ACTIVATION_MS"))
+bot.pingsCH = int(os.getenv("PINGS_CH"))
 
 extensions = (
     "commands",
